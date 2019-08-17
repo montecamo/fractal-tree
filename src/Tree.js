@@ -10,11 +10,12 @@ class Tree extends Canvas {
     this.width = options.width;
   }
 
-  draw({ depth, angle, length, ratio, tilt = 0 }) {
+  draw({ depth, angle, angleRatio = 0, length, lengthRatio = 0, tilt = 0 }) {
     this.depth = depth;
     this.angle = angle;
     this.length = length;
-    this.ratio = ratio;
+    this.lengthRatio = lengthRatio;
+    this.angleRatio = angleRatio;
     this.tilt = tilt;
 
     this.clear();
@@ -26,7 +27,7 @@ class Tree extends Canvas {
   }
 
   getLength(depth) {
-    return this.length - this.length * this.ratio * depth;
+    return this.length - this.length * this.lengthRatio * depth;
   }
 
   getInitialCoords() {
@@ -57,7 +58,7 @@ class Tree extends Canvas {
     );
     const [rightX, rightY] = this.drawBranch(x, y, this.tilt + angle, length);
 
-    const newAngle = this.angle / 2;
+    const newAngle = this.angleRatio + this.angle / 2;
 
     this.drawLevel(leftX, leftY, depth + 1, angle - newAngle);
     this.drawLevel(rightX, rightY, depth + 1, angle + newAngle);

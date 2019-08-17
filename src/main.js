@@ -5,4 +5,10 @@ const FractalTree = new Tree({
 });
 
 FractalTree.mount(document.getElementById('root'));
-FractalTree.draw({ depth: 10, angle: 40, length: 100, ratio: 0.1, tilt: 20 });
+FractalTree.draw({
+  depth: 10,
+  angle: 40,
+  length: 100,
+  lengthRatio: 0.1,
+  angleRatio: 50,
+});
