@@ -1,0 +1,20 @@
+html,
+body,
+.wrapper {
+  height: 100%;
+  margin: 0;
+}
+
+.wrapper {
+  background: #45454d;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  height: 200px;
+  width: 200px;
+  background: #ffd5d5;
+}
