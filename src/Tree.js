@@ -26,7 +26,7 @@ class Tree extends Canvas {
     const [x, y] = this.getInitialCoords();
 
     this.drawLine(x, y, x, y - length);
-    this.drawLevel(x, y - length, 2, angle / 2);
+    this.drawLevel(x, y - length, 2, this.tilt + angle / 2);
   }
 
   getLength(depth) {
