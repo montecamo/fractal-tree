@@ -2,14 +2,7 @@ import Tree from './Tree';
 import Slider from './Slider';
 import './style.css';
 
-const treeOptions = {
-  depth: 10,
-  length: 100,
-  lengthRatio: 0.1,
-  angle: 40,
-  angleRatio: 0,
-  tilt: 0,
-};
+const treeOptions = {};
 
 const FractalTree = new Tree({
   color: '#ffd5d5',
@@ -34,6 +27,8 @@ const sliderFactory = ({ value, min, max, step, property }) => {
 
     FractalTree.draw(treeOptions);
   });
+
+  treeOptions[property] = value;
 
   return slider;
 };
