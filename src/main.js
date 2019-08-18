@@ -11,13 +11,13 @@ const FractalTree = new Tree({
   bottomPercentage: 20,
 });
 
-const sliderFactory = ({ value, min, max, step, property }) => {
+const sliderFactory = ({ value, min, max, step, property, displayName }) => {
   const slider = new Slider({
     value,
     min,
     max,
     step,
-    name: property,
+    name: displayName,
     containerClassName: 'slider-container',
     displayClassName: 'slider-name',
     className: 'slider',
@@ -38,6 +38,7 @@ const sliders = document.getElementById('sliders');
 
 sliderFactory({
   property: 'depth',
+  displayName: 'Depth',
   value: 10,
   min: 0,
   max: 15,
@@ -45,6 +46,7 @@ sliderFactory({
 
 sliderFactory({
   property: 'angle',
+  displayName: 'Angle\u00b0',
   value: 40,
   min: 0,
   max: 180,
@@ -52,6 +54,7 @@ sliderFactory({
 
 sliderFactory({
   property: 'length',
+  displayName: 'Length',
   value: 100,
   min: 0,
   max: 150,
@@ -59,6 +62,7 @@ sliderFactory({
 
 sliderFactory({
   property: 'tilt',
+  displayName: 'Tilt\u00b0',
   value: 0,
   min: -60,
   max: 60,
@@ -66,6 +70,7 @@ sliderFactory({
 
 sliderFactory({
   property: 'angleRatio',
+  displayName: 'Angle ratio',
   value: 0,
   min: -180,
   max: 180,
@@ -74,6 +79,7 @@ sliderFactory({
 
 sliderFactory({
   property: 'lengthRatio',
+  displayName: 'Length ratio',
   value: 0.1,
   min: -1,
   max: 1,
