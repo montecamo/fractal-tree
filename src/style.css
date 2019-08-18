@@ -21,16 +21,22 @@ body,
 }
 
 .sliders {
+  position: fixed;
+  bottom: 40px;
+  right: 0;
+  left: 0;
+
   display: grid;
-  grid-template-columns: 40% 40%;
+  grid-template-columns: 20% 20%;
   grid-template-rows: 20% 20% 20%;
-  column-gap: 50px;
+  column-gap: 100px;
   row-gap: 50px;
   margin: auto auto 0;
   flex-grow: 1;
-  width: 100%;
+  padding: 0 60px;
+  box-sizing: border-box;
 
-  justify-content: center;
+  justify-content: space-between;
   align-content: center;
 }
 

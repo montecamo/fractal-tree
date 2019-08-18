@@ -6,8 +6,8 @@ const treeOptions = {};
 
 const FractalTree = new Tree({
   color: '#ffd5d5',
-  width: 900,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
   bottomPercentage: 20,
 });
 
