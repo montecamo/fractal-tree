@@ -20,6 +20,7 @@ const sliderFactory = ({ value, min, max, step, property }) => {
     name: property,
     containerClassName: 'slider-container',
     displayClassName: 'slider-name',
+    className: 'slider',
   });
 
   slider.addEventListener('input', e => {
