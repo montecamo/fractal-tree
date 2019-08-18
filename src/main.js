@@ -83,7 +83,7 @@ sliderFactory({
   value: 0.1,
   min: -1,
   max: 1,
-  step: 0.01,
+  step: 0.001,
 }).mount(sliders);
 
 FractalTree.mount(document.getElementById('root'));
