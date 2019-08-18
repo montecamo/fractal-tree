@@ -76,5 +76,13 @@ sliderFactory({
   step: 1,
 }).mount(sliders);
 
+sliderFactory({
+  property: 'lengthRatio',
+  value: 0.1,
+  min: -1,
+  max: 1,
+  step: 0.01,
+}).mount(sliders);
+
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw(treeOptions);

@@ -7,11 +7,20 @@ class Slider {
   }
 
   init(options) {
-    const { min, max, value, name, className, containerClassName } = options;
+    const {
+      min,
+      max,
+      value,
+      step,
+      name,
+      className,
+      containerClassName,
+    } = options;
 
     this.slider.setAttribute('type', 'range');
     this.slider.setAttribute('min', min);
     this.slider.setAttribute('max', max);
+    this.slider.setAttribute('step', step);
     this.slider.setAttribute('value', value);
     this.slider.setAttribute('class', className);
 
