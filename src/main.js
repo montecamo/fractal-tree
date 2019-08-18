@@ -1,3 +1,6 @@
+import './style.css';
+import Tree from './Tree';
+
 const FractalTree = new Tree({
   color: '#ffd5d5',
   width: 900,

@@ -56,3 +56,5 @@ class Canvas {
     elem.appendChild(this.canvas);
   }
 }
+
+export default Canvas;

@@ -1,3 +1,5 @@
+import Canvas from './Canvas';
+
 class Tree extends Canvas {
   constructor(options = {}) {
     super({
@@ -72,3 +74,5 @@ class Tree extends Canvas {
     return [endX, endY];
   }
 }
+
+export default Tree;
