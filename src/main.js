@@ -17,7 +17,7 @@ const FractalTree = new Tree({
   color: '#ffd5d5',
   width: 900,
   height: 600,
-  bottomPercentage: 50,
+  bottomPercentage: 20,
 });
 
 const sliderFactory = (
@@ -90,16 +90,16 @@ sliderFactory(sliders, {
 sliderFactory(sliders, {
   property: 'tilt',
   start: 0,
-  min: -40,
-  max: 40,
+  min: -60,
+  max: 60,
   step: 1,
   formatter: Math.round,
 });
 sliderFactory(sliders, {
   property: 'angleRatio',
   start: 0,
-  min: -10,
-  max: 10,
+  min: -180,
+  max: 180,
   step: 1,
   formatter: Math.round,
 });
