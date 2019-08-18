@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "nouislider": "^14.0.2",
     "parcel": "^1.12.3",
     "prettier": "^1.18.2"
   },

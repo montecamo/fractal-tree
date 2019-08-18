@@ -1,7 +1,5 @@
-import 'nouislider/distribute/nouislider.css';
-import noUiSlider from 'nouislider';
-
 import Tree from './Tree';
+import Slider from './Slider';
 import './style.css';
 
 const treeOptions = {
@@ -9,7 +7,7 @@ const treeOptions = {
   length: 100,
   lengthRatio: 0.1,
   angle: 40,
-  angleRatio: 50,
+  angleRatio: 0,
   tilt: 0,
 };
 
@@ -20,89 +18,63 @@ const FractalTree = new Tree({
   bottomPercentage: 20,
 });
 
-const sliderFactory = (
-  container,
-  { start, min, max, step, property, formatter },
-) => {
-  const slider = document.createElement('div');
-  slider.classList.add('slider');
-
-  const sliderName = document.createElement('span');
-  sliderName.innerHTML = property;
-  sliderName.classList.add('slider-name');
-
-  const sliderContainer = document.createElement('div');
-  sliderContainer.classList.add('slider-container');
-
-  noUiSlider.create(slider, {
-    start: [start],
+const sliderFactory = ({ value, min, max, step, property }) => {
+  const slider = new Slider({
+    value,
+    min,
+    max,
     step,
-    format: {
-      to: formatter,
-      from: formatter,
-    },
-    tooltips: [true],
-    range: {
-      min: [min],
-      max: [max],
-    },
+    name: property,
+    containerClassName: 'slider-container',
+    displayClassName: 'slider-name',
   });
 
-  slider.noUiSlider.on('update', (values, handle) => {
-    treeOptions[property] = values[handle];
+  slider.addEventListener('input', e => {
+    treeOptions[property] = +e.target.value;
 
-    console.warn(treeOptions);
     FractalTree.draw(treeOptions);
   });
 
-  sliderContainer.appendChild(slider);
-  sliderContainer.appendChild(sliderName);
-
-  container.appendChild(sliderContainer);
+  return slider;
 };
 
 const sliders = document.getElementById('sliders');
 
-sliderFactory(sliders, {
+sliderFactory({
   property: 'depth',
-  start: 10,
+  value: 10,
   min: 0,
   max: 15,
-  step: 1,
-  formatter: Math.round,
-});
-sliderFactory(sliders, {
+}).mount(sliders);
+
+sliderFactory({
   property: 'angle',
-  start: 40,
+  value: 40,
   min: 0,
   max: 180,
-  step: 1,
-  formatter: Math.round,
-});
-sliderFactory(sliders, {
+}).mount(sliders);
+
+sliderFactory({
   property: 'length',
-  start: 100,
+  value: 100,
   min: 0,
   max: 150,
-  step: 1,
-  formatter: Math.round,
-});
-sliderFactory(sliders, {
+}).mount(sliders);
+
+sliderFactory({
   property: 'tilt',
-  start: 0,
+  value: 0,
   min: -60,
   max: 60,
-  step: 1,
-  formatter: Math.round,
-});
-sliderFactory(sliders, {
+}).mount(sliders);
+
+sliderFactory({
   property: 'angleRatio',
-  start: 0,
+  value: 0,
   min: -180,
   max: 180,
   step: 1,
-  formatter: Math.round,
-});
+}).mount(sliders);
 
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw(treeOptions);
