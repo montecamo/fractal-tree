@@ -8,25 +8,46 @@ class Tree extends Canvas {
       height: options.height,
     });
 
-    this.height = options.height;
-    this.width = options.width;
-    this.bottomPercentage = options.bottomPercentage;
+    this.init(options);
   }
 
-  draw({ depth, angle, angleRatio = 0, length, lengthRatio = 0, tilt = 0 }) {
-    this.depth = depth;
-    this.angle = angle;
-    this.length = length;
-    this.lengthRatio = lengthRatio;
-    this.angleRatio = angleRatio;
-    this.tilt = tilt;
+  setProperty(propName, value) {
+    this[propName] = value === undefined ? this[propName] : value;
+  }
+
+  init(options) {
+    const {
+      width,
+      height,
+      depth,
+      angle,
+      length,
+      lengthRatio,
+      angleRatio,
+      tilt,
+      bottomPercentage,
+    } = options;
+
+    this.setProperty('width', width);
+    this.setProperty('height', height);
+    this.setProperty('bottomPercentage', bottomPercentage);
+    this.setProperty('depth', depth);
+    this.setProperty('angle', angle);
+    this.setProperty('length', length);
+    this.setProperty('lengthRatio', lengthRatio);
+    this.setProperty('angleRatio', angleRatio);
+    this.setProperty('tilt', tilt);
+  }
+
+  draw(options) {
+    this.init(options);
 
     this.clear();
 
     const [x, y] = this.getInitialCoords();
 
-    this.drawLine(x, y, x, y - length);
-    this.drawLevel(x, y - length, 2, this.tilt + angle / 2);
+    this.drawLine(x, y, x, y - this.length);
+    this.drawLevel(x, y - this.length, 2, this.tilt + this.angle / 2);
   }
 
   getLength(depth) {
