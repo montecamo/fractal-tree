@@ -10,6 +10,7 @@ class Tree extends Canvas {
 
     this.height = options.height;
     this.width = options.width;
+    this.bottomPercentage = options.bottomPercentage;
   }
 
   draw({ depth, angle, angleRatio = 0, length, lengthRatio = 0, tilt = 0 }) {
@@ -33,7 +34,10 @@ class Tree extends Canvas {
   }
 
   getInitialCoords() {
-    return [this.width / 2, this.height];
+    return [
+      this.width / 2,
+      this.height - (this.bottomPercentage * this.height) / 100,
+    ];
   }
 
   getBranchTop(x, y, angle, radius) {
