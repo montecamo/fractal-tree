@@ -11,6 +11,10 @@ class Canvas {
   initCanvas(canvas, options) {
     const { width, height } = options;
 
+    this.updateDimensions(width, height);
+  }
+
+  updateDimensions(width, height) {
     this.canvas.width = width;
     this.canvas.height = height;
   }

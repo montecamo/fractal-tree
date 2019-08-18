@@ -37,6 +37,8 @@ class Tree extends Canvas {
     this.setProperty('lengthRatio', lengthRatio);
     this.setProperty('angleRatio', angleRatio);
     this.setProperty('tilt', tilt);
+
+    this.updateDimensions(this.width, this.height);
   }
 
   draw(options) {
