@@ -2,13 +2,15 @@ import Tree from './Tree';
 import Slider from './Slider';
 import './style.css';
 
-const treeOptions = {};
+const treeOptions = {
+  leftOffset: 0,
+  bottomOffset: 200,
+};
 
 const FractalTree = new Tree({
   color: '#ffd5d5',
   width: window.innerWidth,
   height: window.innerHeight,
-  bottomPercentage: 20,
 });
 
 const sliderFactory = ({ value, min, max, step, property, displayName }) => {
@@ -28,6 +30,8 @@ const sliderFactory = ({ value, min, max, step, property, displayName }) => {
 
     FractalTree.draw(treeOptions);
   });
+
+  slider.addEventListener('mousedown', e => e.stopPropagation());
 
   treeOptions[property] = value;
 
@@ -57,7 +61,7 @@ sliderFactory({
   displayName: 'Length',
   value: 100,
   min: 0,
-  max: 150,
+  max: 1000,
 }).mount(sliders);
 
 sliderFactory({
@@ -85,6 +89,34 @@ sliderFactory({
   max: 1,
   step: 0.001,
 }).mount(sliders);
+
+const onMouseDown = e => {
+  const initialX = e.clientX;
+  const initialY = e.clientY;
+
+  const { leftOffset, bottomOffset } = treeOptions;
+
+  const onMouseMove = e => {
+    const deltaX = e.clientX - initialX;
+    const deltaY = e.clientY - initialY;
+
+    treeOptions.bottomOffset = bottomOffset - deltaY;
+    treeOptions.leftOffset = leftOffset + deltaX;
+
+    FractalTree.draw(treeOptions);
+  };
+
+  const onMouseUp = () => {
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+  };
+
+  window.addEventListener('mousemove', onMouseMove);
+
+  window.addEventListener('mouseup', onMouseUp);
+};
+
+window.addEventListener('mousedown', onMouseDown);
 
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw(treeOptions);
