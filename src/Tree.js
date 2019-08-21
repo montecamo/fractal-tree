@@ -25,12 +25,14 @@ class Tree extends Canvas {
       lengthRatio,
       angleRatio,
       tilt,
-      bottomPercentage,
+      bottomOffset,
+      leftOffset,
     } = options;
 
     this.setProperty('width', width);
     this.setProperty('height', height);
-    this.setProperty('bottomPercentage', bottomPercentage);
+    this.setProperty('bottomOffset', bottomOffset);
+    this.setProperty('leftOffset', leftOffset);
     this.setProperty('depth', depth);
     this.setProperty('angle', angle);
     this.setProperty('length', length);
@@ -49,18 +51,17 @@ class Tree extends Canvas {
     const [x, y] = this.getInitialCoords();
 
     this.drawLine(x, y, x, y - this.length);
-    this.drawLevel(x, y - this.length, 2, this.tilt + this.angle / 2);
+    this.drawLevel(x, y - this.length, 1, this.tilt + this.angle / 2);
   }
 
   getLength(depth) {
+    if (this.length - this.length * this.lengthRatio * depth <= 0) return 0;
+
     return this.length - this.length * this.lengthRatio * depth;
   }
 
   getInitialCoords() {
-    return [
-      this.width / 2,
-      this.height - (this.bottomPercentage * this.height) / 100,
-    ];
+    return [this.width / 2 + this.leftOffset, this.height - this.bottomOffset];
   }
 
   getBranchTop(x, y, angle, radius) {
