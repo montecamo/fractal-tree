@@ -1,16 +1,28 @@
 import Tree from './Tree';
 import Slider from './Slider';
+import DragCapture from './DragCapture';
 import './style.css';
 
 const treeOptions = {
   leftOffset: 0,
-  bottomOffset: 200,
+  topOffset: window.innerHeight - 200,
 };
 
 const FractalTree = new Tree({
   color: '#ffd5d5',
   width: window.innerWidth,
   height: window.innerHeight,
+});
+
+const DragCaptor = new DragCapture(window, {
+  x: treeOptions.leftOffset,
+  y: treeOptions.topOffset,
+  onChange: ([x, y]) => {
+    treeOptions.leftOffset = x;
+    treeOptions.topOffset = y;
+
+    FractalTree.draw(treeOptions);
+  },
 });
 
 const sliderFactory = ({ value, min, max, step, property, displayName }) => {
@@ -90,33 +102,7 @@ sliderFactory({
   step: 0.001,
 }).mount(sliders);
 
-const onMouseDown = e => {
-  const initialX = e.clientX;
-  const initialY = e.clientY;
-
-  const { leftOffset, bottomOffset } = treeOptions;
-
-  const onMouseMove = e => {
-    const deltaX = e.clientX - initialX;
-    const deltaY = e.clientY - initialY;
-
-    treeOptions.bottomOffset = bottomOffset - deltaY;
-    treeOptions.leftOffset = leftOffset + deltaX;
-
-    FractalTree.draw(treeOptions);
-  };
-
-  const onMouseUp = () => {
-    window.removeEventListener('mousemove', onMouseMove);
-    window.removeEventListener('mouseup', onMouseUp);
-  };
-
-  window.addEventListener('mousemove', onMouseMove);
-
-  window.addEventListener('mouseup', onMouseUp);
-};
-
-window.addEventListener('mousedown', onMouseDown);
-
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw(treeOptions);
+
+DragCaptor.capture();

@@ -25,13 +25,13 @@ class Tree extends Canvas {
       lengthRatio,
       angleRatio,
       tilt,
-      bottomOffset,
+      topOffset,
       leftOffset,
     } = options;
 
     this.setProperty('width', width);
     this.setProperty('height', height);
-    this.setProperty('bottomOffset', bottomOffset);
+    this.setProperty('topOffset', topOffset);
     this.setProperty('leftOffset', leftOffset);
     this.setProperty('depth', depth);
     this.setProperty('angle', angle);
@@ -61,7 +61,7 @@ class Tree extends Canvas {
   }
 
   getInitialCoords() {
-    return [this.width / 2 + this.leftOffset, this.height - this.bottomOffset];
+    return [this.width / 2 + this.leftOffset, this.topOffset];
   }
 
   getBranchTop(x, y, angle, radius) {
