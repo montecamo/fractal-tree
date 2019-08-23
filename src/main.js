@@ -1,6 +1,9 @@
+import throttle from 'lodash/throttle';
+
 import Tree from './Tree';
 import Slider from './Slider';
 import DragCapture from './DragCapture';
+import Animation from './Animation';
 import './style.css';
 
 const treeOptions = {
@@ -37,11 +40,36 @@ const sliderFactory = ({ value, min, max, step, property, displayName }) => {
     className: 'slider',
   });
 
-  slider.addEventListener('input', e => {
-    treeOptions[property] = +e.target.value;
+  const animation = new Animation();
 
+  let animating = false;
+
+  const animate = () => {
+    treeOptions[property] = animation.value();
     FractalTree.draw(treeOptions);
-  });
+
+    if (animation.finished) {
+      animating = false;
+      return;
+    }
+
+    window.requestAnimationFrame(animate);
+  };
+
+  const onInput = e => {
+    const from = treeOptions[property];
+    const to = +e.target.value;
+
+    animation.start(from, to, 1000);
+
+    if (!animating) {
+      animating = true;
+      console.warn('do animate');
+      animate();
+    }
+  };
+
+  slider.addEventListener('input', throttle(onInput, 100));
 
   slider.addEventListener('mousedown', e => e.stopPropagation());
 
@@ -99,10 +127,57 @@ sliderFactory({
   value: 0.1,
   min: -1,
   max: 1,
-  step: 0.001,
+  step: 0.0001,
 }).mount(sliders);
 
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw(treeOptions);
+
+const animation = new Animation();
+
+const animate = () => {
+  treeOptions.lengthRatio = animation.value();
+
+  FractalTree.draw(treeOptions);
+
+  if (animation.finished) {
+    return;
+  }
+
+  window.requestAnimationFrame(animate);
+};
+
+let animLoop = false;
+
+function growUp(start) {
+  if (!animLoop) return;
+
+  animation.start(0.5, start, 6000);
+
+  animation.onEnd(() => growDown(start));
+
+  animate();
+}
+
+function growDown(start) {
+  if (!animLoop) return;
+
+  animation.start(start, 0.5, 5000);
+
+  animation.onEnd(() => growUp(start));
+
+  animate();
+}
+
+document.getElementById('animate').addEventListener('click', () => {
+  animLoop = !animLoop;
+
+  if (animLoop) {
+    growDown(treeOptions.lengthRatio);
+    document.getElementById('animate').innerHTML = 'Animating...';
+  } else {
+    document.getElementById('animate').innerHTML = 'Animate';
+  }
+});
 
 DragCaptor.capture();
