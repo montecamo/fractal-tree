@@ -5,8 +5,11 @@ class DragDelta {
     this.onChange = onChange;
     this.elem = elem;
 
-    this.x = x;
-    this.y = y;
+    this.x = x();
+    this.y = y();
+
+    this.getX = x;
+    this.getY = y;
 
     this.reset = this.reset.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -23,6 +26,8 @@ class DragDelta {
   onMouseDown(e) {
     this.pressedX = e.clientX;
     this.pressedY = e.clientY;
+    this.x = this.getX();
+    this.y = this.getY();
 
     this.elem.addEventListener('mousemove', this.onMouseMove);
 

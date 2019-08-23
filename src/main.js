@@ -21,8 +21,8 @@ const FractalTree = new Tree({
 });
 
 const DragCaptor = new DragCapture(window, {
-  x: treeOptions.leftOffset,
-  y: treeOptions.topOffset,
+  x: () => treeOptions.leftOffset,
+  y: () => treeOptions.topOffset,
   onChange: ([x, y]) => {
     treeOptions.leftOffset = x;
     treeOptions.topOffset = y;
@@ -32,8 +32,8 @@ const DragCaptor = new DragCapture(window, {
 });
 
 const ScrollCaptor = new ScrollCapture(window, {
-  x: treeOptions.leftOffset,
-  y: treeOptions.topOffset,
+  x: () => treeOptions.leftOffset,
+  y: () => treeOptions.topOffset,
   onChange: ([x, y]) => {
     treeOptions.leftOffset = x;
     treeOptions.topOffset = y;
@@ -43,7 +43,7 @@ const ScrollCaptor = new ScrollCapture(window, {
 });
 
 const ZoomCaptor = new ZoomCapture(window, {
-  zoom: treeOptions.length,
+  zoom: () => treeOptions.length,
   onChange: zoom => {
     treeOptions.length = zoom;
 

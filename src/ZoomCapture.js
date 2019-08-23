@@ -13,7 +13,7 @@ class ScrollCapture {
   onMouseWheel(e) {
     if (!e.ctrlKey) return;
 
-    this.zoom -= e.deltaY * 0.1;
+    this.zoom -= e.deltaY * 0.3;
 
     this.onChange(this.zoom);
   }
