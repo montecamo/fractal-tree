@@ -3,6 +3,7 @@ import throttle from 'lodash/throttle';
 import Tree from './Tree';
 import Slider from './Slider';
 import DragCapture from './DragCapture';
+import ScrollCapture from './ScrollCapture';
 import Animation from './Animation';
 import './style.css';
 
@@ -18,6 +19,17 @@ const FractalTree = new Tree({
 });
 
 const DragCaptor = new DragCapture(window, {
+  x: treeOptions.leftOffset,
+  y: treeOptions.topOffset,
+  onChange: ([x, y]) => {
+    treeOptions.leftOffset = x;
+    treeOptions.topOffset = y;
+
+    FractalTree.draw(treeOptions);
+  },
+});
+
+const ScrollCaptor = new ScrollCapture(window, {
   x: treeOptions.leftOffset,
   y: treeOptions.topOffset,
   onChange: ([x, y]) => {
@@ -181,3 +193,4 @@ document.getElementById('animate').addEventListener('click', () => {
 });
 
 DragCaptor.capture();
+ScrollCaptor.capture();
