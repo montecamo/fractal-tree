@@ -14,10 +14,10 @@ class DragDelta {
   }
 
   onMouseMove(e) {
-    const deltaX = e.clientX - this.pressedX;
-    const deltaY = e.clientY - this.pressedY;
+    this.deltaX = e.clientX - this.pressedX;
+    this.deltaY = e.clientY - this.pressedY;
 
-    this.onChange([this.x + deltaX, this.y + deltaY]);
+    this.onChange([this.x + this.deltaX, this.y + this.deltaY]);
   }
 
   onMouseDown(e) {
@@ -32,6 +32,9 @@ class DragDelta {
   reset() {
     this.elem.removeEventListener('mousemove', this.onMouseMove);
     this.elem.removeEventListener('mouseup', this.reset);
+
+    this.x += this.deltaX;
+    this.y += this.deltaY;
   }
 
   capture() {
