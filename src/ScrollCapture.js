@@ -12,6 +12,8 @@ class ScrollCapture {
   }
 
   onMouseWheel(e) {
+    if (e.ctrlKey) return;
+
     this.x -= e.deltaX;
     this.y -= e.deltaY;
 
