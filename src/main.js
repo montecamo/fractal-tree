@@ -4,12 +4,14 @@ import Tree from './Tree';
 import Slider from './Slider';
 import DragCapture from './DragCapture';
 import ScrollCapture from './ScrollCapture';
+import ZoomCapture from './ZoomCapture';
 import Animation from './Animation';
 import './style.css';
 
 const treeOptions = {
   leftOffset: 0,
   topOffset: window.innerHeight - 200,
+  length: 100,
 };
 
 const FractalTree = new Tree({
@@ -35,6 +37,15 @@ const ScrollCaptor = new ScrollCapture(window, {
   onChange: ([x, y]) => {
     treeOptions.leftOffset = x;
     treeOptions.topOffset = y;
+
+    FractalTree.draw(treeOptions);
+  },
+});
+
+const ZoomCaptor = new ZoomCapture(window, {
+  zoom: treeOptions.length,
+  onChange: zoom => {
+    treeOptions.length = zoom;
 
     FractalTree.draw(treeOptions);
   },
@@ -76,7 +87,6 @@ const sliderFactory = ({ value, min, max, step, property, displayName }) => {
 
     if (!animating) {
       animating = true;
-      console.warn('do animate');
       animate();
     }
   };
@@ -194,3 +204,4 @@ document.getElementById('animate').addEventListener('click', () => {
 
 DragCaptor.capture();
 ScrollCaptor.capture();
+ZoomCaptor.capture();
