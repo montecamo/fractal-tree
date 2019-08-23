@@ -1,12 +1,9 @@
 class ScrollCapture {
   constructor(elem = window, options) {
-    const { x, y, onChange } = options;
+    const { onChange } = options;
 
     this.onChange = onChange;
     this.elem = elem;
-
-    this.x = x;
-    this.y = y;
 
     this.onMouseWheel = this.onMouseWheel.bind(this);
   }
@@ -14,7 +11,7 @@ class ScrollCapture {
   onMouseWheel(e) {
     if (e.ctrlKey) return;
 
-    this.onChange([this.x() - e.deltaX, this.y() - e.deltaY]);
+    this.onChange([e.deltaX, e.deltaY]);
   }
 
   capture() {

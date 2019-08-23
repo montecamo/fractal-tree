@@ -34,9 +34,9 @@ const DragCaptor = new DragCapture(window, {
 const ScrollCaptor = new ScrollCapture(window, {
   x: () => treeOptions.leftOffset,
   y: () => treeOptions.topOffset,
-  onChange: ([x, y]) => {
-    treeOptions.leftOffset = x;
-    treeOptions.topOffset = y;
+  onChange: ([deltaX, deltaY]) => {
+    treeOptions.leftOffset -= deltaX;
+    treeOptions.topOffset -= deltaY;
 
     FractalTree.draw(treeOptions);
   },
