@@ -43,7 +43,7 @@ class Tree extends Canvas {
     this.updateDimensions(this.width, this.height);
   }
 
-  draw(options) {
+  draw(options = {}) {
     this.init(options);
 
     this.clear();

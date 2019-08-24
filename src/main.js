@@ -6,7 +6,7 @@ import ZoomCapture from './ZoomCapture';
 import Animation from './Animation';
 import './style.css';
 
-let animations = false;
+let animations = true;
 
 const $animate = document.getElementById('animate');
 const $animateSwitch = document.getElementById('animate-switch');
@@ -17,6 +17,14 @@ const FractalTree = new Tree({
   color: '#ffd5d5',
   width: window.innerWidth,
   height: window.innerHeight,
+  leftOffset: 0,
+  topOffset: window.innerHeight - 200,
+  depth: 10,
+  angle: 40,
+  length: 100,
+  tilt: 0,
+  angleRatio: 0,
+  lengthRatio: 0.1,
 });
 
 const DragCaptor = new DragCapture(window, {
@@ -201,16 +209,7 @@ $animateSwitch.addEventListener('click', () => {
 });
 
 FractalTree.mount(document.getElementById('root'));
-FractalTree.draw({
-  leftOffset: 0,
-  topOffset: window.innerHeight - 200,
-  depth: 10,
-  angle: 40,
-  length: 100,
-  tilt: 0,
-  angleRatio: 0,
-  lengthRatio: 0.1,
-});
+FractalTree.draw();
 
 window.addEventListener('resize', () => {
   FractalTree.draw({
