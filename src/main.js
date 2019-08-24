@@ -24,10 +24,10 @@ const DragCaptor = new DragCapture(window, {
   x: () => treeOptions.leftOffset,
   y: () => treeOptions.topOffset,
   onChange: ([x, y]) => {
-    treeOptions.leftOffset = x;
-    treeOptions.topOffset = y;
-
-    FractalTree.draw(treeOptions);
+    FractalTree.draw({
+      leftOffset: x,
+      topOffset: y,
+    });
   },
 });
 
@@ -38,16 +38,18 @@ const ScrollCaptor = new ScrollCapture(window, {
     treeOptions.leftOffset -= deltaX;
     treeOptions.topOffset -= deltaY;
 
-    FractalTree.draw(treeOptions);
+    FractalTree.draw({
+      treeOptions,
+    });
   },
 });
 
 const ZoomCaptor = new ZoomCapture(window, {
   zoom: treeOptions.length,
   onChange: zoom => {
-    treeOptions.length = zoom;
-
-    FractalTree.draw(treeOptions);
+    FractalTree.draw({
+      length: zoom,
+    });
   },
 });
 
@@ -68,8 +70,9 @@ const sliderFactory = ({ value, min, max, step, property, displayName }) => {
   let animating = false;
 
   const animate = () => {
-    treeOptions[property] = animation.value();
-    FractalTree.draw(treeOptions);
+    FractalTree.draw({
+      [property]: animation.value(),
+    });
 
     if (animation.finished) {
       animating = false;
@@ -159,9 +162,9 @@ const animateGrow = () => {
     return;
   }
 
-  treeOptions.lengthRatio = animation.value();
-
-  FractalTree.draw(treeOptions);
+  FractalTree.draw({
+    lengthRatio: animation.value(),
+  });
 
   window.requestAnimationFrame(animateGrow);
 };
@@ -194,14 +197,16 @@ document.getElementById('animate').addEventListener('click', () => {
 
   if (animLoop) {
     startValue = treeOptions.lengthRatio;
+
     growDown();
+
     document.getElementById('animate').innerHTML = 'Animating...';
   } else {
     animation.finish();
 
-    treeOptions.lengthRatio = startValue;
-
-    FractalTree.draw(treeOptions);
+    FractalTree.draw({
+      lengthRatio: startValue,
+    });
 
     document.getElementById('animate').innerHTML = 'Animate';
   }
