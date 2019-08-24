@@ -130,7 +130,7 @@ const initSliders = () => {
       value: FractalTree.get('lengthRatio'),
       min: -1,
       max: 1,
-      step: 0.0001,
+      step: 0.001,
       animator: animations && new Animation(),
       onChange: sliderDrawer('lengthRatio'),
     }).mount($sliders),
