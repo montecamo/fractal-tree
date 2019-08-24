@@ -45,6 +45,16 @@ class TreeSlider extends Slider {
     this.onChange(this.value);
   }
 
+  finishAnimation() {
+    if (this.animation) {
+      this.animation.finish();
+
+      this.value = this.animation.value();
+
+      this.onChange(this.value);
+    }
+  }
+
   animate() {
     this.value = this.animation.value();
 

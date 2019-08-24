@@ -57,7 +57,7 @@ class Slider {
 
     elem.appendChild(this.container);
 
-    return this.unmount.bind(this);
+    return this;
   }
 
   unmount() {

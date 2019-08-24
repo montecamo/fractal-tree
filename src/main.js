@@ -188,7 +188,11 @@ $animate.addEventListener('click', () => {
 $animateSwitch.addEventListener('click', () => {
   animations = !animations;
 
-  sliders.forEach(unmount => unmount());
+  sliders.forEach(slider => {
+    slider.finishAnimation();
+    slider.unmount();
+  });
+
   sliders = [];
 
   $animateSwitch.innerHTML = `Animations: ${animations ? 'on' : 'off'}`;
