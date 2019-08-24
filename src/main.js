@@ -43,7 +43,7 @@ const ScrollCaptor = new ScrollCapture(window, {
 });
 
 const ZoomCaptor = new ZoomCapture(window, {
-  zoom: () => treeOptions.length,
+  zoom: treeOptions.length,
   onChange: zoom => {
     treeOptions.length = zoom;
 
