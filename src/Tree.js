@@ -96,6 +96,10 @@ class Tree extends Canvas {
 
     return [endX, endY];
   }
+
+  get(prop) {
+    return this[prop];
+  }
 }
 
 export default Tree;

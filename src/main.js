@@ -6,12 +6,6 @@ import ZoomCapture from './ZoomCapture';
 import Animation from './Animation';
 import './style.css';
 
-const treeOptions = {
-  leftOffset: 0,
-  topOffset: window.innerHeight - 200,
-  length: 100,
-};
-
 const FractalTree = new Tree({
   color: '#ffd5d5',
   width: window.innerWidth,
@@ -19,8 +13,8 @@ const FractalTree = new Tree({
 });
 
 const DragCaptor = new DragCapture(window, {
-  x: () => treeOptions.leftOffset,
-  y: () => treeOptions.topOffset,
+  x: () => FractalTree.get('leftOffset'),
+  y: () => FractalTree.get('topOffset'),
   onChange: ([x, y]) => {
     FractalTree.draw({
       leftOffset: x,
@@ -30,20 +24,16 @@ const DragCaptor = new DragCapture(window, {
 });
 
 const ScrollCaptor = new ScrollCapture(window, {
-  x: () => treeOptions.leftOffset,
-  y: () => treeOptions.topOffset,
   onChange: ([deltaX, deltaY]) => {
-    treeOptions.leftOffset -= deltaX;
-    treeOptions.topOffset -= deltaY;
-
     FractalTree.draw({
-      treeOptions,
+      leftOffset: FractalTree.get('leftOffset') - deltaX,
+      topOffset: FractalTree.get('topOffset') - deltaY,
     });
   },
 });
 
 const ZoomCaptor = new ZoomCapture(window, {
-  zoom: treeOptions.length,
+  zoom: FractalTree.get('length'),
   onChange: zoom => {
     FractalTree.draw({
       length: zoom,
@@ -134,7 +124,7 @@ const animateGrow = () => {
 };
 
 let animLoop = false;
-let startValue = treeOptions.lengthRatio;
+let startValue = FractalTree.get('lengthRatio');
 
 function growUp() {
   if (!animLoop) return;
@@ -160,7 +150,7 @@ document.getElementById('animate').addEventListener('click', () => {
   animLoop = !animLoop;
 
   if (animLoop) {
-    startValue = treeOptions.lengthRatio;
+    startValue = FractalTree.get('lengthRatio');
 
     growDown();
 
@@ -177,7 +167,10 @@ document.getElementById('animate').addEventListener('click', () => {
 });
 
 FractalTree.mount(document.getElementById('root'));
-FractalTree.draw(treeOptions);
+FractalTree.draw({
+  leftOffset: 0,
+  topOffset: window.innerHeight - 200,
+});
 
 DragCaptor.capture();
 ScrollCaptor.capture();
