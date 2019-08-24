@@ -111,16 +111,17 @@ new TreeSlider({
 
 const animation = new Animation();
 
-const animateGrow = () => {
-  if (animation.finished) {
-    return;
-  }
-
+const animateGrow = cb => {
   FractalTree.draw({
     lengthRatio: animation.value(),
   });
 
-  window.requestAnimationFrame(animateGrow);
+  if (animation.finished) {
+    cb();
+    return;
+  }
+
+  window.requestAnimationFrame(() => animateGrow(cb));
 };
 
 let animLoop = false;
@@ -131,9 +132,7 @@ function growUp() {
 
   animation.start(0.5, startValue, 6000);
 
-  animation.onEnd(() => growDown());
-
-  animateGrow();
+  animateGrow(growDown);
 }
 
 function growDown() {
@@ -141,9 +140,7 @@ function growDown() {
 
   animation.start(startValue, 0.5, 5000);
 
-  animation.onEnd(() => growUp());
-
-  animateGrow();
+  animateGrow(growUp);
 }
 
 document.getElementById('animate').addEventListener('click', () => {
@@ -158,8 +155,10 @@ document.getElementById('animate').addEventListener('click', () => {
   } else {
     animation.finish();
 
-    FractalTree.draw({
-      lengthRatio: startValue,
+    window.requestAnimationFrame(() => {
+      FractalTree.draw({
+        lengthRatio: startValue,
+      });
     });
 
     document.getElementById('animate').innerHTML = 'Animate';
