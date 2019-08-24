@@ -6,6 +6,13 @@ import ZoomCapture from './ZoomCapture';
 import Animation from './Animation';
 import './style.css';
 
+let animations = false;
+
+const $animate = document.getElementById('animate');
+const $animateSwitch = document.getElementById('animate-switch');
+const $sliders = document.getElementById('sliders');
+let sliders = [];
+
 const FractalTree = new Tree({
   color: '#ffd5d5',
   width: window.innerWidth,
@@ -41,75 +48,91 @@ const ZoomCaptor = new ZoomCapture(window, {
   },
 });
 
-const sliders = document.getElementById('sliders');
 const sliderDrawer = prop => value => {
   FractalTree.draw({
     [prop]: value,
   });
 };
 
-new TreeSlider({
-  property: 'depth',
-  displayName: 'Depth',
-  value: 10,
-  min: 0,
-  max: 15,
-  onChange: sliderDrawer('depth'),
-}).mount(sliders);
+const initSliders = () => {
+  sliders.push(
+    new TreeSlider({
+      property: 'depth',
+      displayName: 'Depth',
+      value: FractalTree.get('depth'),
+      min: 0,
+      max: 15,
+      onChange: sliderDrawer('depth'),
+    }).mount($sliders),
+  );
 
-new TreeSlider({
-  property: 'angle',
-  displayName: 'Angle\u00b0',
-  value: 40,
-  min: 0,
-  max: 180,
-  animator: new Animation(),
-  onChange: sliderDrawer('angle'),
-}).mount(sliders);
+  sliders.push(
+    new TreeSlider({
+      property: 'angle',
+      displayName: 'Angle\u00b0',
+      value: FractalTree.get('angle'),
+      min: 0,
+      max: 180,
+      animator: animations && new Animation(),
+      onChange: sliderDrawer('angle'),
+    }).mount($sliders),
+  );
 
-new TreeSlider({
-  property: 'length',
-  displayName: 'Length',
-  value: 100,
-  min: 0,
-  max: 1000,
-  animator: new Animation(),
-  onChange: sliderDrawer('length'),
-}).mount(sliders);
+  sliders.push(
+    new TreeSlider({
+      property: 'length',
+      displayName: 'Length',
+      value: FractalTree.get('length'),
+      min: 0,
+      max: 1000,
+      animator: animations && new Animation(),
+      onChange: sliderDrawer('length'),
+    }).mount($sliders),
+  );
 
-new TreeSlider({
-  property: 'tilt',
-  displayName: 'Tilt\u00b0',
-  value: 0,
-  min: -60,
-  max: 60,
-  animator: new Animation(),
-  onChange: sliderDrawer('tilt'),
-}).mount(sliders);
+  sliders.push(
+    new TreeSlider({
+      property: 'tilt',
+      displayName: 'Tilt\u00b0',
+      value: FractalTree.get('tilt'),
+      min: -60,
+      max: 60,
+      animator: animations && new Animation(),
+      onChange: sliderDrawer('tilt'),
+    }).mount($sliders),
+  );
 
-new TreeSlider({
-  property: 'angleRatio',
-  displayName: 'Angle ratio',
-  value: 0,
-  min: -180,
-  max: 180,
-  step: 1,
-  animator: new Animation(),
-  onChange: sliderDrawer('angleRatio'),
-}).mount(sliders);
+  sliders.push(
+    new TreeSlider({
+      property: 'angleRatio',
+      displayName: 'Angle ratio',
+      value: FractalTree.get('angleRatio'),
+      min: -180,
+      max: 180,
+      step: 1,
+      animator: animations && new Animation(),
+      onChange: sliderDrawer('angleRatio'),
+    }).mount($sliders),
+  );
 
-new TreeSlider({
-  property: 'lengthRatio',
-  displayName: 'Length ratio',
-  value: 0.1,
-  min: -1,
-  max: 1,
-  step: 0.0001,
-  animator: new Animation(),
-  onChange: sliderDrawer('lengthRatio'),
-}).mount(sliders);
+  sliders.push(
+    new TreeSlider({
+      property: 'lengthRatio',
+      displayName: 'Length ratio',
+      value: FractalTree.get('lengthRatio'),
+      min: -1,
+      max: 1,
+      step: 0.0001,
+      animator: animations && new Animation(),
+      onChange: sliderDrawer('lengthRatio'),
+    }).mount($sliders),
+  );
+};
 
 const animation = new Animation();
+
+let animLoop = false;
+let startValue = FractalTree.get('lengthRatio');
 
 const animateGrow = cb => {
   FractalTree.draw({
@@ -123,9 +146,6 @@ const animateGrow = cb => {
 
   window.requestAnimationFrame(() => animateGrow(cb));
 };
-
-let animLoop = false;
-let startValue = FractalTree.get('lengthRatio');
 
 function growUp() {
   if (!animLoop) return;
@@ -143,7 +163,7 @@ function growDown() {
   animateGrow(growUp);
 }
 
-document.getElementById('animate').addEventListener('click', () => {
+$animate.addEventListener('click', () => {
   animLoop = !animLoop;
 
   if (animLoop) {
@@ -151,7 +171,7 @@ document.getElementById('animate').addEventListener('click', () => {
 
     growDown();
 
-    document.getElementById('animate').innerHTML = 'Animating...';
+    $animate.innerHTML = 'Animating...';
   } else {
     animation.finish();
 
@@ -165,10 +185,27 @@ document.getElementById('animate').addEventListener('click', () => {
   }
 });
 
+$animateSwitch.addEventListener('click', () => {
+  animations = !animations;
+
+  sliders.forEach(unmount => unmount());
+  sliders = [];
+
+  $animateSwitch.innerHTML = `Animations: ${animations ? 'on' : 'off'}`;
+
+  initSliders();
+});
+
 FractalTree.mount(document.getElementById('root'));
 FractalTree.draw({
   leftOffset: 0,
   topOffset: window.innerHeight - 200,
+  depth: 10,
+  angle: 40,
+  length: 100,
+  tilt: 0,
+  angleRatio: 0,
+  lengthRatio: 0.1,
 });
 
 window.addEventListener('resize', () => {
@@ -177,6 +214,9 @@ window.addEventListener('resize', () => {
     height: window.innerHeight,
   });
 });
+
+initSliders();
+$animateSwitch.innerHTML = `Animations: ${animations ? 'on' : 'off'}`;
 
 DragCaptor.capture();
 ScrollCaptor.capture();

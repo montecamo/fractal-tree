@@ -35,7 +35,11 @@ class TreeSlider extends Slider {
     this.animate = this.animate.bind(this);
     this.onInput = this.onInput.bind(this);
 
-    this.addEventListener('input', throttle(this.onInput, 100));
+    if (this.animation) {
+      this.onInput = throttle(this.onInput, 100);
+    }
+
+    this.addEventListener('input', this.onInput);
     this.addEventListener('mousedown', e => e.stopPropagation());
 
     this.onChange(this.value);

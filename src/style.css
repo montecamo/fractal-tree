@@ -97,12 +97,16 @@ canvas {
   cursor: pointer;
 }
 
-.animate {
+.animation-buttons {
   position: fixed;
   bottom: 10px;
   left: 50%;
-  padding: 5px 10px;
 
   transform: translateX(-50%);
+}
+
+.animate,
+.animate-switch {
   cursor: pointer;
+  padding: 5px 10px;
 }

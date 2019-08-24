@@ -49,13 +49,19 @@ class Slider {
   }
 
   mount(elem) {
-    const container = document.createElement('div');
-    container.classList.add(this.containerClassName);
+    this.container = document.createElement('div');
+    this.container.classList.add(this.containerClassName);
 
-    container.appendChild(this.slider);
-    container.appendChild(this.display);
+    this.container.appendChild(this.slider);
+    this.container.appendChild(this.display);
 
-    elem.appendChild(container);
+    elem.appendChild(this.container);
+
+    return this.unmount.bind(this);
+  }
+
+  unmount() {
+    this.container.parentNode.removeChild(this.container);
   }
 }
 
