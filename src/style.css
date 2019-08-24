@@ -16,7 +16,7 @@ body,
 }
 
 canvas {
-  cursor: pointer;
+  cursor: move;
 }
 
 .container {
