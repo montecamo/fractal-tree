@@ -152,55 +152,63 @@ sliderFactory({
   step: 0.0001,
 }).mount(sliders);
 
-FractalTree.mount(document.getElementById('root'));
-FractalTree.draw(treeOptions);
-
 const animation = new Animation();
 
-const animate = () => {
-  treeOptions.lengthRatio = animation.value();
-
-  FractalTree.draw(treeOptions);
-
+const animateGrow = () => {
   if (animation.finished) {
     return;
   }
 
-  window.requestAnimationFrame(animate);
+  treeOptions.lengthRatio = animation.value();
+
+  FractalTree.draw(treeOptions);
+
+  window.requestAnimationFrame(animateGrow);
 };
 
 let animLoop = false;
+let startValue = treeOptions.lengthRatio;
 
-function growUp(start) {
+function growUp() {
   if (!animLoop) return;
 
-  animation.start(0.5, start, 6000);
+  animation.start(0.5, startValue, 6000);
 
-  animation.onEnd(() => growDown(start));
+  animation.onEnd(() => growDown());
 
-  animate();
+  animateGrow();
 }
 
-function growDown(start) {
+function growDown() {
   if (!animLoop) return;
 
-  animation.start(start, 0.5, 5000);
+  animation.start(startValue, 0.5, 5000);
 
-  animation.onEnd(() => growUp(start));
+  animation.onEnd(() => growUp());
 
-  animate();
+  animateGrow();
 }
 
 document.getElementById('animate').addEventListener('click', () => {
   animLoop = !animLoop;
 
   if (animLoop) {
-    growDown(treeOptions.lengthRatio);
+    startValue = treeOptions.lengthRatio;
+    growDown();
     document.getElementById('animate').innerHTML = 'Animating...';
   } else {
+    animation.finish();
+
+    treeOptions.lengthRatio = startValue;
+
+    FractalTree.draw(treeOptions);
+
     document.getElementById('animate').innerHTML = 'Animate';
   }
 });
+
+FractalTree.mount(document.getElementById('root'));
+FractalTree.draw(treeOptions);
 
 DragCaptor.capture();
 ScrollCaptor.capture();

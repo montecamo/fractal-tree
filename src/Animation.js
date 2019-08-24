@@ -12,6 +12,10 @@ class Animation {
     this.to = to;
   }
 
+  finish() {
+    this.finished = true;
+  }
+
   value() {
     if (this.finished) return this.to;
 
