@@ -172,6 +172,13 @@ FractalTree.draw({
   topOffset: window.innerHeight - 200,
 });
 
+window.addEventListener('resize', () => {
+  FractalTree.draw({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+});
+
 DragCaptor.capture();
 ScrollCaptor.capture();
 ZoomCaptor.capture();
