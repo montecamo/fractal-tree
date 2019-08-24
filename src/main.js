@@ -1,7 +1,5 @@
-import throttle from 'lodash/throttle';
-
 import Tree from './Tree';
-import Slider from './Slider';
+import TreeSlider from './TreeSlider';
 import DragCapture from './DragCapture';
 import ScrollCapture from './ScrollCapture';
 import ZoomCapture from './ZoomCapture';
@@ -53,106 +51,72 @@ const ZoomCaptor = new ZoomCapture(window, {
   },
 });
 
-const sliderFactory = ({ value, min, max, step, property, displayName }) => {
-  const slider = new Slider({
-    value,
-    min,
-    max,
-    step,
-    name: displayName,
-    containerClassName: 'slider-container',
-    displayClassName: 'slider-name',
-    className: 'slider',
+const sliders = document.getElementById('sliders');
+const sliderDrawer = prop => value => {
+  FractalTree.draw({
+    [prop]: value,
   });
-
-  const animation = new Animation();
-
-  let animating = false;
-
-  const animate = () => {
-    FractalTree.draw({
-      [property]: animation.value(),
-    });
-
-    if (animation.finished) {
-      animating = false;
-      return;
-    }
-
-    window.requestAnimationFrame(animate);
-  };
-
-  const onInput = e => {
-    const from = treeOptions[property];
-    const to = +e.target.value;
-
-    animation.start(from, to, 1000);
-
-    if (!animating) {
-      animating = true;
-      animate();
-    }
-  };
-
-  slider.addEventListener('input', throttle(onInput, 100));
-
-  slider.addEventListener('mousedown', e => e.stopPropagation());
-
-  treeOptions[property] = value;
-
-  return slider;
 };
 
-const sliders = document.getElementById('sliders');
-
-sliderFactory({
+new TreeSlider({
   property: 'depth',
   displayName: 'Depth',
   value: 10,
   min: 0,
   max: 15,
+  onChange: sliderDrawer('depth'),
 }).mount(sliders);
 
-sliderFactory({
+new TreeSlider({
   property: 'angle',
   displayName: 'Angle\u00b0',
   value: 40,
   min: 0,
   max: 180,
+  animator: new Animation(),
+  onChange: sliderDrawer('angle'),
 }).mount(sliders);
 
-sliderFactory({
+new TreeSlider({
   property: 'length',
   displayName: 'Length',
   value: 100,
   min: 0,
   max: 1000,
+  animator: new Animation(),
+  onChange: sliderDrawer('length'),
 }).mount(sliders);
 
-sliderFactory({
+new TreeSlider({
   property: 'tilt',
   displayName: 'Tilt\u00b0',
   value: 0,
   min: -60,
   max: 60,
+  animator: new Animation(),
+  onChange: sliderDrawer('tilt'),
 }).mount(sliders);
 
-sliderFactory({
+new TreeSlider({
   property: 'angleRatio',
   displayName: 'Angle ratio',
   value: 0,
   min: -180,
   max: 180,
   step: 1,
+  animator: new Animation(),
+  onChange: sliderDrawer('angleRatio'),
 }).mount(sliders);
 
-sliderFactory({
+new TreeSlider({
   property: 'lengthRatio',
   displayName: 'Length ratio',
   value: 0.1,
   min: -1,
   max: 1,
   step: 0.0001,
+  animator: new Animation(),
+  onChange: sliderDrawer('lengthRatio'),
 }).mount(sliders);
 
 const animation = new Animation();
