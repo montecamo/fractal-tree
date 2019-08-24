@@ -22,7 +22,7 @@ class Animation {
     const progress = (Date.now() - this.startTime) / this.duration;
 
     if (progress >= 1) {
-      this.finished = true;
+      this.finish();
 
       if (this.cb) {
         this.cb();
