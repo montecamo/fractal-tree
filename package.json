@@ -18,8 +18,7 @@
   },
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url /fracty",
-    "deploy": "gh-pages -d dist"
+    "build": "parcel build src/index.html"
   },
   "author": "montecamo",
   "license": "MIT"
