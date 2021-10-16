@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/main.js",
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "parcel": "^1.12.3",
     "prettier": "^1.18.2"
   },
